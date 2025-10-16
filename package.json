@@ -17,6 +17,8 @@
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.6",
     "ink": "^6.3.1",
+    "ink-big-text": "^2.0.0",
+    "ink-gradient": "^3.0.0",
     "minio": "^8.0.6",
     "pg": "^8.16.3",
     "react": "^19.2.0",
