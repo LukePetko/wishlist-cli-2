@@ -6,13 +6,19 @@
     "dev": "bun run src/index.tsx"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/pg": "^8.15.5",
+    "drizzle-kit": "^0.31.5"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.6",
     "ink": "^6.3.1",
-    "react": "^19.2.0"
+    "pg": "^8.16.3",
+    "react": "^19.2.0",
+    "zod": "^4.1.12"
   }
 }
