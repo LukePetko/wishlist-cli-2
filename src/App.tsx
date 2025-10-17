@@ -1,19 +1,20 @@
 import { Box, useApp, useInput } from 'ink';
 import Header from './components/Header';
 import List from './components/List';
+import useItem from './state';
 
 export default function App() {
   const { exit } = useApp();
+  const { item } = useItem();
 
   useInput((input, key) => {
     if (input === 'q') exit();
-    if (input === 'a') console.log('a');
   });
 
   return (
     <Box flexDirection="column">
       <Header />
-      <List />
+      {!item && <List />}
     </Box>
   );
 }

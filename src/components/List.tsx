@@ -4,15 +4,13 @@ import { useEffect, useState } from 'react';
 import { db } from '../db';
 import { wishlistItems as wishlistItemsSchema } from '../db/schema';
 import { count, eq } from 'drizzle-orm';
+import useItem from '../state';
 
 const List = () => {
   const [wishlistItems, setWishlistItems] = useState<
     { value: string; label: string }[]
   >([]);
-  const [selectedItem, setSelectedItem] = useState<{
-    value: string;
-    label: string;
-  } | null>(null);
+  const { setItem } = useItem();
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
@@ -56,13 +54,14 @@ const List = () => {
     if (input === 'l')
       setPage((page) => (page < numberOfPages ? page + 1 : page));
     if (input === 'h') setPage((page) => (page > 1 ? page - 1 : page));
+    if (input === 'a') setItem('create');
   });
 
   return (
     <Box flexDirection="column" padding={1}>
       <SelectInput
         items={wishlistItems}
-        onSelect={(item) => setSelectedItem(item)}
+        onSelect={(item) => setItem(item.value)}
       />
       <Box
         flexDirection="column"

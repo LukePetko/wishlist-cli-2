@@ -23,7 +23,7 @@ const initialState: State = {
   wishlistItem: null,
 };
 
-const useState = create<State & Actions>((set) => ({
+const useItem = create<State & Actions>((set) => ({
   ...initialState,
   setPage: (page) => set({ page }),
   backHome: () => set({ item: null, modal: null, wishlistItem: null }),
@@ -32,4 +32,4 @@ const useState = create<State & Actions>((set) => ({
   setItem: (item) => set({ item }),
 }));
 
-export default useState;
+export default useItem;
