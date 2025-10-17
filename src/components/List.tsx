@@ -5,6 +5,7 @@ import { db } from '../db';
 import { wishlistItems as wishlistItemsSchema } from '../db/schema';
 import { count, eq } from 'drizzle-orm';
 import useItem from '../state';
+import Legend from './Legend';
 
 const List = () => {
   const [wishlistItems, setWishlistItems] = useState<
@@ -14,7 +15,9 @@ const List = () => {
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
-  const [showIsBought, setShowIsBought] = useState(false);
+  const [showIsBought, setShowIsBought] = useState<
+    'unbought' | 'bought' | 'all'
+  >('unbought');
   const [numberOfPages, setNumberOfPages] = useState(1);
 
   const fetchWishlistItems = async () => {
@@ -35,7 +38,11 @@ const List = () => {
     const result = await db
       .select({ count: count() })
       .from(wishlistItemsSchema)
-      .where(eq(wishlistItemsSchema.isBought, showIsBought));
+      .where(
+        showIsBought === 'all'
+          ? undefined
+          : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
+      );
 
     if (result.length === 0) return;
 
@@ -44,21 +51,33 @@ const List = () => {
 
   useEffect(() => {
     fetchNumberOfPages();
-  }, []);
+  }, [showIsBought]);
 
   useEffect(() => {
     fetchWishlistItems();
-  }, [page]);
+  }, [page, showIsBought]);
 
   useInput((input, key) => {
     if (input === 'l')
       setPage((page) => (page < numberOfPages ? page + 1 : page));
     if (input === 'h') setPage((page) => (page > 1 ? page - 1 : page));
     if (input === 'a') setItem('create');
+    if (input === 'b')
+      setShowIsBought((showIsBought) => {
+        switch (showIsBought) {
+          case 'unbought':
+            return 'bought';
+          case 'bought':
+            return 'all';
+          default:
+            return 'unbought';
+        }
+      });
   });
 
   return (
     <Box flexDirection="column" padding={1}>
+      <Legend showIsBought={showIsBought} />
       <SelectInput
         items={wishlistItems}
         onSelect={(item) => setItem(item.value)}
