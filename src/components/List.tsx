@@ -27,6 +27,11 @@ const List = () => {
         label: wishlistItemsSchema.name,
       })
       .from(wishlistItemsSchema)
+      .where(
+        showIsBought === 'all'
+          ? undefined
+          : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
+      )
       .limit(pageSize)
       .offset((page - 1) * pageSize)
       .execute();
@@ -44,7 +49,14 @@ const List = () => {
           : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
       );
 
-    if (result.length === 0) return;
+    if (result[0].count < page) {
+      setPage(1);
+    }
+
+    if (result[0].count === 0) {
+      setNumberOfPages(1);
+      return;
+    }
 
     setNumberOfPages(Math.ceil(result[0].count / pageSize));
   };
@@ -78,6 +90,11 @@ const List = () => {
   return (
     <Box flexDirection="column" padding={1}>
       <Legend showIsBought={showIsBought} />
+      {wishlistItems.length === 0 && (
+        <Box paddingLeft={1}>
+          <Text>No items found.</Text>
+        </Box>
+      )}
       <SelectInput
         items={wishlistItems}
         onSelect={(item) => setItem(item.value)}
@@ -85,7 +102,9 @@ const List = () => {
       <Box
         flexDirection="column"
         padding={1}
-        paddingTop={pageSize - wishlistItems.length + 1}
+        paddingTop={
+          pageSize - wishlistItems.length + (wishlistItems.length && 1)
+        }
       >
         <Text>
           &#8592; h {page}/{numberOfPages} l &#8594;
