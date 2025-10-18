@@ -11,30 +11,36 @@ const List = () => {
   const [wishlistItems, setWishlistItems] = useState<
     { value: string; label: string }[]
   >([]);
-  const { setItem } = useItem();
+  const { setItem, setPage: setItemPage } = useItem();
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize, setPageSize] = useState(5);
   const [showIsBought, setShowIsBought] = useState<
     'unbought' | 'bought' | 'all'
   >('unbought');
   const [numberOfPages, setNumberOfPages] = useState(1);
 
   const fetchWishlistItems = async () => {
-    const res = await db
-      .select({
-        value: wishlistItemsSchema.id,
-        label: wishlistItemsSchema.name,
-      })
-      .from(wishlistItemsSchema)
-      .where(
-        showIsBought === 'all'
-          ? undefined
-          : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
-      )
-      .limit(pageSize)
-      .offset((page - 1) * pageSize)
-      .execute();
+    const res = (
+      await db
+        .select({
+          value: wishlistItemsSchema.id,
+          label: wishlistItemsSchema.name,
+          isBought: wishlistItemsSchema.isBought,
+        })
+        .from(wishlistItemsSchema)
+        .where(
+          showIsBought === 'all'
+            ? undefined
+            : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
+        )
+        .limit(pageSize)
+        .offset((page - 1) * pageSize)
+        .execute()
+    ).map((item) => ({
+      ...item,
+      label: `${item.label}${item.isBought ? ' (bought)' : ''}`,
+    }));
 
     setWishlistItems(res);
   };
@@ -73,7 +79,10 @@ const List = () => {
     if (input === 'l')
       setPage((page) => (page < numberOfPages ? page + 1 : page));
     if (input === 'h') setPage((page) => (page > 1 ? page - 1 : page));
-    if (input === 'a') setItem('create');
+    if (input === 'a') {
+      setItem('create');
+      setItemPage('info');
+    }
     if (input === 'b')
       setShowIsBought((showIsBought) => {
         switch (showIsBought) {
@@ -97,7 +106,10 @@ const List = () => {
       )}
       <SelectInput
         items={wishlistItems}
-        onSelect={(item) => setItem(item.value)}
+        onSelect={(item) => {
+          setItem(item.value);
+          setItemPage('info');
+        }}
       />
       <Box
         flexDirection="column"

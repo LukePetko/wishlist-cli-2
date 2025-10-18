@@ -10,7 +10,7 @@ type State = {
 
 type Actions = {
   backHome: () => void;
-  setPage: (page: string) => void;
+  setPage: (page: string | null) => void;
   setWishlistItem: (item: WishlistItem) => void;
   setModal: (modal: string) => void;
   setItem: (item: 'create' | string | null) => void;
