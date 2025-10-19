@@ -1,3 +1,4 @@
+import { pages } from './constants';
 import type {
   categories,
   difficultyLevels,
@@ -8,13 +9,13 @@ import type {
 
 export type WishlistLink = typeof wishlistLinks.$inferSelect & {
   store: typeof stores.$inferSelect;
-  priceEur: string;
 };
 
-export type WishlistItem = typeof wishlistItems.$inferSelect & {
-  links: WishlistLink[];
-  lowestPrice: WishlistLink;
+export type WishlistItem = typeof wishlistItems.$inferInsert & {
+  wishlistLinks: WishlistLink[];
 
-  categories: (typeof categories.$inferSelect)[];
+  wishlistItemsCategories: (typeof categories.$inferSelect)[];
   difficultyLevel: typeof difficultyLevels.$inferSelect | null;
 };
+
+export type Page = (typeof pages)[number];

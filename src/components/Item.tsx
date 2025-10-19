@@ -1,0 +1,107 @@
+import { Box, Text, useInput } from 'ink';
+import useItem from '../state';
+import { db } from '../db';
+import { eq } from 'drizzle-orm';
+import { wishlistItems } from '../db/schema';
+import { useEffect } from 'react';
+import type { WishlistItem } from '../types';
+import { v4 as uuidv4 } from 'uuid';
+import NavBar from './NavBar';
+
+const Item = () => {
+  const { item, setItem, page, setPage, setActiveItem } = useItem();
+
+  const getWishlistItem = async () => {
+    if (!item) return;
+    if (item === 'create') {
+      setActiveItem({
+        name: '',
+        id: uuidv4(),
+        image: null,
+        description: null,
+        isBought: false,
+        difficultyLevel: null,
+        wishlistLinks: [],
+        wishlistItemsCategories: [],
+      });
+      return;
+    }
+
+    const data = await db.query.wishlistItems.findFirst({
+      where: eq(wishlistItems.id, item),
+      with: {
+        wishlistLinks: {
+          with: {
+            store: true,
+          },
+        },
+        wishlistItemsCategories: {
+          with: {
+            category: true,
+          },
+        },
+        difficultyLevel: true,
+      },
+    });
+
+    if (!data) return;
+
+    const parsedData = {
+      ...data,
+      wishlistItemsCategories: data.wishlistItemsCategories.map(
+        (item) => item.category,
+      ),
+    } satisfies WishlistItem;
+
+    setActiveItem(parsedData);
+  };
+
+  useEffect(() => {
+    getWishlistItem();
+  }, [item]);
+
+  useInput((input, key) => {
+    if (input === 'p') setItem(null);
+
+    if (input === 'l') {
+      switch (page) {
+        case 'info':
+          setPage('difficulty');
+          break;
+        case 'difficulty':
+          setPage('categories');
+          break;
+        case 'categories':
+          setPage('links');
+          break;
+        default:
+          setPage(page);
+          break;
+      }
+    }
+
+    if (input === 'h') {
+      switch (page) {
+        case 'difficulty':
+          setPage('info');
+          break;
+        case 'categories':
+          setPage('difficulty');
+          break;
+        case 'links':
+          setPage('categories');
+          break;
+        default:
+          setPage(page);
+          break;
+      }
+    }
+  });
+  return (
+    <Box flexDirection="column" marginTop={1}>
+      <NavBar />
+    </Box>
+  );
+};
+
+export default Item;
