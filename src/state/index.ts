@@ -1,16 +1,16 @@
 import { create } from 'zustand';
-import type { WishlistItem } from '../types';
+import type { Page, WishlistItem } from '../types';
 
 type State = {
   item: 'create' | string | null;
-  page: string | null;
+  page: Page | null;
   modal: string | null;
   activeItem: WishlistItem | null;
 };
 
 type Actions = {
   backHome: () => void;
-  setPage: (page: string | null) => void;
+  setPage: (page: Page | null) => void;
   setActiveItem: (activeItem: WishlistItem) => void;
   setModal: (modal: string) => void;
   setItem: (item: 'create' | string | null) => void;

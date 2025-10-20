@@ -7,9 +7,11 @@ import { useEffect } from 'react';
 import type { WishlistItem } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import NavBar from './NavBar';
+import Info from './Info';
+import Difficulty from './Difficulty';
 
 const Item = () => {
-  const { item, setItem, page, setPage, setActiveItem } = useItem();
+  const { item, setItem, page, setPage, setActiveItem, activeItem } = useItem();
 
   const getWishlistItem = async () => {
     if (!item) return;
@@ -96,10 +98,16 @@ const Item = () => {
           break;
       }
     }
+
+    if (input === 'x') {
+      console.log(activeItem);
+    }
   });
   return (
     <Box flexDirection="column" marginTop={1}>
       <NavBar />
+      {page === 'info' && <Info />}
+      {page === 'difficulty' && <Difficulty />}
     </Box>
   );
 };
