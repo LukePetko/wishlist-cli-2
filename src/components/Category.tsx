@@ -36,6 +36,31 @@ const Category = () => {
       if (currentCategory === 0) return;
       setHoveredField(categories[currentCategory - 1].id);
     }
+
+    if (input === ' ') {
+      if (!hoveredField) return;
+      if (
+        activeItem?.wishlistItemsCategories?.find((c) => c.id === hoveredField)
+      ) {
+        setActiveItem({
+          ...activeItem,
+          wishlistItemsCategories: activeItem.wishlistItemsCategories.filter(
+            (c) => c.id !== hoveredField,
+          ),
+        });
+      } else {
+        setActiveItem({
+          ...activeItem,
+          wishlistItemsCategories: [
+            ...activeItem.wishlistItemsCategories,
+            {
+              id: hoveredField,
+              name: categories.find((c) => c.id === hoveredField)?.name ?? '',
+            },
+          ],
+        });
+      }
+    }
   });
 
   return (
@@ -51,7 +76,13 @@ const Category = () => {
             )}
             {category.id !== 'add-category' && (
               <Text color={color} bold={hoveredField === category.id}>
-                [{category.id === activeItem?.difficultyLevel?.id ? 'X' : ' '}]{' '}
+                [
+                {activeItem?.wishlistItemsCategories?.find(
+                  (c) => c.id === category.id,
+                )
+                  ? 'X'
+                  : ' '}
+                ]{' '}
               </Text>
             )}
             <Text color={color}>{category.name}</Text>
