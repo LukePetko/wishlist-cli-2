@@ -6,12 +6,17 @@ import type { Category as CategoryType } from '../types';
 
 const Category = () => {
   const { activeItem, setActiveItem } = useItem();
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([
+    {
+      id: 'add-category',
+      name: 'Add Category',
+    },
+  ]);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
   const handleCategoryFetch = async () => {
     const res = await fetchCategories();
-    setCategories((prev) => [...prev, ...res]);
+    setCategories((prev) => [...res, ...prev]);
   };
 
   useEffect(() => {
@@ -44,10 +49,12 @@ const Category = () => {
             ) : (
               <Text>{'   '}</Text>
             )}
-            <Text color={color} bold={hoveredField === category.id}>
-              [{category.id === activeItem?.difficultyLevel?.id ? 'X' : ' '}]
-            </Text>
-            <Text color={color}> {category.name}</Text>
+            {category.id !== 'add-category' && (
+              <Text color={color} bold={hoveredField === category.id}>
+                [{category.id === activeItem?.difficultyLevel?.id ? 'X' : ' '}]{' '}
+              </Text>
+            )}
+            <Text color={color}>{category.name}</Text>
           </Box>
         );
       })}
