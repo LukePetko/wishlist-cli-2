@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import NavBar from './NavBar';
 import Info from './Info';
 import Difficulty from './Difficulty';
+import Category from './Category';
 
 const Item = () => {
   const { item, setItem, page, setPage, setActiveItem, activeItem } = useItem();
@@ -108,6 +109,7 @@ const Item = () => {
       <NavBar />
       {page === 'info' && <Info />}
       {page === 'difficulty' && <Difficulty />}
+      {page === 'categories' && <Category />}
     </Box>
   );
 };

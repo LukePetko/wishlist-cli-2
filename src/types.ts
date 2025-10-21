@@ -24,3 +24,5 @@ export type WishlistItem = Omit<
 export type Page = (typeof pages)[number];
 
 export type DifficultyLevel = typeof difficultyLevels.$inferSelect;
+
+export type Category = typeof categories.$inferSelect;
