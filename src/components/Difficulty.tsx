@@ -1,14 +1,14 @@
 import { Box, Text, useInput } from 'ink';
-import useItem from '../state';
 import { useEffect, useState } from 'react';
-import type { DifficultyLevel } from '../types';
 import fetchDifficulties from '../db/fetchDifficulties';
+import useItem from '../state';
+import type { DifficultyLevel } from '../types';
 
 const Difficulty = () => {
   const { activeItem, setActiveItem } = useItem();
   const [difficulties, setDifficulties] = useState<DifficultyLevel[]>([
     {
-      id: '',
+      id: 'no-difficulty',
       name: 'No Difficulty',
       color: null,
     },
