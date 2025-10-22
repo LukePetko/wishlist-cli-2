@@ -16,7 +16,6 @@ type ModalProps = {
   isOpen: boolean;
   title: string;
   message?: string;
-  onClose: () => void;
   position?: Corner | Offsets;
   width?: number;
   padding?: number;
@@ -27,17 +26,11 @@ const Modal: React.FC<ModalProps> = ({
   isOpen,
   title,
   message,
-  onClose,
   position = 'center',
   width = 50,
   padding = 1,
   children,
 }) => {
-  useInput((input, key) => {
-    if (!isOpen) return;
-    if (key.escape || input.toLowerCase() === 'q') onClose();
-  });
-
   if (!isOpen) return null;
 
   const isCorner = typeof position === 'string';
@@ -106,7 +99,6 @@ const Content: React.FC<{
     <Box marginY={1}>
       {children ? children : message ? <Text>{message}</Text> : null}
     </Box>
-    <Text dimColor>Press [Esc] or Q to close</Text>
   </Box>
 );
 

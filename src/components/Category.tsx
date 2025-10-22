@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import fetchCategories from '../db/fetchCategories';
 import useItem from '../state';
 import type { Category as CategoryType } from '../types';
+import CreateCategoryModal from './CreateCategoryModal';
+import createNewCategory from '../db/createNewCategory';
 
 const Category = () => {
   const { activeItem, setActiveItem } = useItem();
@@ -13,10 +15,28 @@ const Category = () => {
     },
   ]);
   const [hoveredField, setHoveredField] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalClose = async (name?: string) => {
+    if (!name || categories.find((c) => c.name === name)) {
+      setIsModalOpen(false);
+      return;
+    }
+
+    await createNewCategory(name);
+    handleCategoryFetch();
+    setIsModalOpen(false);
+  };
 
   const handleCategoryFetch = async () => {
     const res = await fetchCategories();
-    setCategories((prev) => [...res, ...prev]);
+    setCategories([
+      ...res,
+      {
+        id: 'add-category',
+        name: 'Add Category',
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -24,6 +44,7 @@ const Category = () => {
   }, []);
 
   useInput((input, key) => {
+    if (isModalOpen) return;
     const currentCategory = categories.findIndex(
       (category) => category.id === hoveredField,
     );
@@ -61,6 +82,10 @@ const Category = () => {
         });
       }
     }
+
+    if (key.return && hoveredField === 'add-category') {
+      setIsModalOpen(true);
+    }
   });
 
   return (
@@ -89,6 +114,7 @@ const Category = () => {
           </Box>
         );
       })}
+      <CreateCategoryModal isOpen={isModalOpen} onClose={handleModalClose} />
     </Box>
   );
 };
