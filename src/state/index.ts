@@ -12,7 +12,7 @@ type Actions = {
   backHome: () => void;
   setPage: (page: Page | null) => void;
   setActiveItem: (activeItem: WishlistItem) => void;
-  setModal: (modal: string) => void;
+  setModal: (modal: string | null) => void;
   setItem: (item: 'create' | string | null) => void;
 };
 

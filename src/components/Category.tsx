@@ -1,13 +1,13 @@
 import { Box, Text, useInput } from 'ink';
 import { useEffect, useState } from 'react';
+import createNewCategory from '../db/createNewCategory';
 import fetchCategories from '../db/fetchCategories';
 import useItem from '../state';
 import type { Category as CategoryType } from '../types';
 import CreateCategoryModal from './CreateCategoryModal';
-import createNewCategory from '../db/createNewCategory';
 
 const Category = () => {
-  const { activeItem, setActiveItem } = useItem();
+  const { activeItem, setActiveItem, modal } = useItem();
   const [categories, setCategories] = useState<CategoryType[]>([
     {
       id: 'add-category',
@@ -44,7 +44,7 @@ const Category = () => {
   }, []);
 
   useInput((input, key) => {
-    if (isModalOpen) return;
+    if (modal) return;
     const currentCategory = categories.findIndex(
       (category) => category.id === hoveredField,
     );

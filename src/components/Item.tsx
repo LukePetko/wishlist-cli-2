@@ -12,7 +12,16 @@ import Difficulty from './Difficulty';
 import Category from './Category';
 
 const Item = () => {
-  const { item, setItem, page, setPage, setActiveItem, activeItem } = useItem();
+  const {
+    item,
+    setItem,
+    page,
+    setPage,
+    setActiveItem,
+    activeItem,
+    backHome,
+    modal,
+  } = useItem();
 
   const getWishlistItem = async () => {
     if (!item) return;
@@ -64,6 +73,7 @@ const Item = () => {
   }, [item]);
 
   useInput((input, key) => {
+    if (modal) return;
     if (input === 'p') setItem(null);
 
     if (input === 'l') {
@@ -102,6 +112,10 @@ const Item = () => {
 
     if (input === 'x') {
       console.log(activeItem);
+    }
+
+    if (input === 'b') {
+      backHome();
     }
   });
   return (

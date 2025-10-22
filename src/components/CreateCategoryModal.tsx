@@ -1,6 +1,7 @@
 import { Box, Text, useInput } from 'ink';
 import TextInput from 'ink-text-input';
-import { type FC, useState } from 'react';
+import { type FC, useState, useEffect } from 'react';
+import useItem from '../state';
 import Modal from './Modal';
 
 type CreateCategoryModalProps = {
@@ -14,10 +15,17 @@ const CreateCategoryModal: FC<CreateCategoryModalProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [isInputSelected, setIsInputSelected] = useState(false);
+  const { setModal } = useItem();
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setModal('create-category');
+  }, [isOpen, setModal]);
 
   const handleModalClose = async (name?: string) => {
     setName('');
     setIsInputSelected(false);
+    setModal(null);
     onClose(name);
   };
 
