@@ -2,17 +2,17 @@ import { Box, Text } from 'ink';
 import InkTextInput from 'ink-text-input';
 import type { FC } from 'react';
 
-type TextInputProps = {
+type TextInputProps<T> = {
   value: string;
   onChange: (value: string) => void;
-  hoveredField: string;
-  selectedField: string | null;
-  fieldName: string;
+  hoveredField: T;
+  selectedField: T | null;
+  fieldName: T;
   fieldTitle: string;
   fieldPlaceholder?: string;
 };
 
-const TextInput: FC<TextInputProps> = ({
+const TextInput = <T,>({
   value,
   onChange,
   hoveredField,
@@ -20,7 +20,7 @@ const TextInput: FC<TextInputProps> = ({
   fieldName,
   fieldTitle,
   fieldPlaceholder,
-}) => {
+}: TextInputProps<T>) => {
   return (
     <Box flexDirection="row" gap={1}>
       {hoveredField === fieldName ? (

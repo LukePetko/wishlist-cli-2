@@ -13,8 +13,9 @@ export type WishlistLink = typeof wishlistLinks.$inferSelect & {
 
 export type WishlistItem = Omit<
   typeof wishlistItems.$inferInsert,
-  'difficultyLevel'
+  'difficultyLevel' | 'id'
 > & {
+  id: string | null;
   wishlistLinks: WishlistLink[] | undefined;
 
   wishlistItemsCategories: (typeof categories.$inferSelect)[];

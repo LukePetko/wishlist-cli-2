@@ -1,6 +1,6 @@
 import { Box, Text, useInput } from 'ink';
 import TextInput from 'ink-text-input';
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import useItem from '../state';
 import Modal from './Modal';
 

@@ -1,15 +1,15 @@
-import { Box, Text, useInput } from 'ink';
-import useItem from '../state';
-import { db } from '../db';
 import { eq } from 'drizzle-orm';
-import { wishlistItems } from '../db/schema';
+import { Box, useInput } from 'ink';
 import { useEffect } from 'react';
+import { db } from '../db';
+import { wishlistItems } from '../db/schema';
+import useItem from '../state';
 import type { WishlistItem } from '../types';
-import { v4 as uuidv4 } from 'uuid';
-import NavBar from './NavBar';
-import Info from './Info';
-import Difficulty from './Difficulty';
 import Category from './Category';
+import Difficulty from './Difficulty';
+import Info from './Info';
+import NavBar from './NavBar';
+import Links from './Links';
 
 const Item = () => {
   const {
@@ -28,7 +28,7 @@ const Item = () => {
     if (item === 'create') {
       setActiveItem({
         name: '',
-        id: uuidv4(),
+        id: null,
         image: null,
         description: null,
         isBought: false,
@@ -124,6 +124,7 @@ const Item = () => {
       {page === 'info' && <Info />}
       {page === 'difficulty' && <Difficulty />}
       {page === 'categories' && <Category />}
+      {page === 'links' && <Links />}
     </Box>
   );
 };
