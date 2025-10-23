@@ -2,13 +2,20 @@ import { useState } from 'react';
 import useItem from '../state';
 import { Box, Text, useInput } from 'ink';
 import codeToSymbol from '../utils/codeToSymbol';
+import LinkModal from './LinkModal';
 
 const Links = () => {
-  const { activeItem } = useItem();
+  const { activeItem, modal, setModal } = useItem();
 
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
   useInput((input, key) => {
+    if (modal) return;
+
+    if (key.return) {
+      setModal('create-link');
+    }
+
     if (activeItem?.wishlistLinks) {
       const currentLink = activeItem?.wishlistLinks?.findIndex(
         (link) => link.id === hoveredField,
@@ -60,6 +67,14 @@ const Links = () => {
           Add Link
         </Text>
       </Box>
+      <LinkModal
+        isOpen={modal === 'create-link'}
+        onClose={() => setModal(null)}
+        link={
+          activeItem?.wishlistLinks?.find((link) => link.id === hoveredField) ??
+          null
+        }
+      />
     </Box>
   );
 };
