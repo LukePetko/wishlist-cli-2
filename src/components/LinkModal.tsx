@@ -3,6 +3,7 @@ import type { WishlistLink } from '../types';
 import Modal from './Modal';
 import { useState } from 'react';
 import TextInput from './TextInput';
+import StoreField from './StoreField';
 
 type LinkModalProps = {
   link: WishlistLink | null;
@@ -104,6 +105,10 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
             fieldTitle="Currency"
             hoveredField={hoveredField}
             selectedField={selectedField}
+          />
+          <StoreField
+            isHovered={hoveredField === 'store'}
+            isSelected={selectedField === 'store'}
           />
         </Box>
         <Text color="cyan">Press [y] to confirm</Text>
