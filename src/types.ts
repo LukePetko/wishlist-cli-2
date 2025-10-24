@@ -7,7 +7,8 @@ import type {
   wishlistLinks,
 } from './db/schema';
 
-export type WishlistLink = typeof wishlistLinks.$inferSelect & {
+export type WishlistLink = Omit<typeof wishlistLinks.$inferSelect, 'id'> & {
+  id?: string;
   store: typeof stores.$inferSelect;
 };
 
