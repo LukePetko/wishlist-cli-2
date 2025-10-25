@@ -109,6 +109,7 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
           <StoreField
             isHovered={hoveredField === 'store'}
             isSelected={selectedField === 'store'}
+            selectedStoreId={link?.store.id}
           />
         </Box>
         <Text color="cyan">Press [y] to confirm</Text>

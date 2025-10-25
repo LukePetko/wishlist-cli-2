@@ -28,3 +28,5 @@ export type Page = (typeof pages)[number];
 export type DifficultyLevel = typeof difficultyLevels.$inferSelect;
 
 export type Category = typeof categories.$inferSelect;
+
+export type Store = typeof stores.$inferSelect;
