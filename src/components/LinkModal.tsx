@@ -23,7 +23,11 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
   };
 
   useInput((input, key) => {
-    if (!isOpen) return;
+    if (!isOpen || selectedField === 'store') return;
+
+    if (key.return) {
+      setSelectedField(selectedField ? null : hoveredField);
+    }
 
     if (input === 'j') {
       switch (hoveredField) {
@@ -109,7 +113,9 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
           <StoreField
             isHovered={hoveredField === 'store'}
             isSelected={selectedField === 'store'}
-            selectedStoreId={link?.store.id}
+            unselect={() => setSelectedField(null)}
+            currentStoreId={link?.store.id}
+            setCurrentStoreId={(storeId) => setLink({ ...link, storeId })}
           />
         </Box>
         <Text color="cyan">Press [y] to confirm</Text>
