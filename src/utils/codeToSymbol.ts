@@ -1,4 +1,5 @@
 const codeToSymbol = (code: string) => {
+  if (!code) return '';
   let symbol = code.toUpperCase();
 
   switch (code) {

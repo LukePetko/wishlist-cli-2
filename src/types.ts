@@ -4,12 +4,15 @@ import type {
   difficultyLevels,
   stores,
   wishlistItems,
-  wishlistLinks,
 } from './db/schema';
 
-export type WishlistLink = Omit<typeof wishlistLinks.$inferSelect, 'id'> & {
-  id?: string;
-  store: typeof stores.$inferSelect;
+export type WishlistLink = {
+  storeId: string | null;
+  itemId: string | null;
+  url: string | null;
+  price: number | null;
+  currency: string | null;
+  store: Store;
 };
 
 export type WishlistItem = Omit<
@@ -29,4 +32,4 @@ export type DifficultyLevel = typeof difficultyLevels.$inferSelect;
 
 export type Category = typeof categories.$inferSelect;
 
-export type Store = typeof stores.$inferSelect;
+export type Store = typeof stores.$inferInsert;
