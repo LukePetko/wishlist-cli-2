@@ -22,6 +22,7 @@ const Item = () => {
     activeItem,
     backHome,
     modal,
+    blockInput,
   } = useItem();
 
   const { handleSave } = useSave();
@@ -76,7 +77,7 @@ const Item = () => {
   }, [item]);
 
   useInput((input, key) => {
-    if (modal) return;
+    if (modal || blockInput) return;
     if (input === 'p') setItem(null);
 
     if (input === 'l') {

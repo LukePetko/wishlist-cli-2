@@ -6,6 +6,7 @@ type State = {
   page: Page | null;
   modal: string | null;
   activeItem: WishlistItem | null;
+  blockInput: boolean;
 };
 
 type Actions = {
@@ -14,6 +15,7 @@ type Actions = {
   setActiveItem: (activeItem: WishlistItem) => void;
   setModal: (modal: string | null) => void;
   setItem: (item: 'create' | string | null) => void;
+  setBlockInput: (blockInput: boolean) => void;
 };
 
 const initialState: State = {
@@ -21,6 +23,7 @@ const initialState: State = {
   page: null,
   modal: null,
   activeItem: null,
+  blockInput: false,
 };
 
 const useItem = create<State & Actions>((set) => ({
@@ -30,6 +33,7 @@ const useItem = create<State & Actions>((set) => ({
   setActiveItem: (activeItem) => set({ activeItem }),
   setModal: (modal) => set({ modal }),
   setItem: (item) => set({ item }),
+  setBlockInput: (blockInput) => set({ blockInput }),
 }));
 
 export default useItem;

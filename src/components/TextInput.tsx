@@ -1,6 +1,8 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: intentional */
 import { Box, Text } from 'ink';
 import InkTextInput from 'ink-text-input';
-import type { FC } from 'react';
+import { useEffect } from 'react';
+import useItem from '../state';
 
 type TextInputProps<T> = {
   value: string;
@@ -21,6 +23,13 @@ const TextInput = <T,>({
   fieldTitle,
   fieldPlaceholder,
 }: TextInputProps<T>) => {
+  const { setBlockInput } = useItem();
+
+  useEffect(() => {
+    if (selectedField) setBlockInput(true);
+    else setBlockInput(false);
+  }, [hoveredField, selectedField]);
+
   return (
     <Box flexDirection="row" gap={1}>
       {hoveredField === fieldName ? (
