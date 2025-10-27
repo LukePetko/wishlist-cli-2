@@ -8,21 +8,20 @@ type StoreFieldProps = {
   isHovered: boolean;
   isSelected: boolean;
   unselect?: () => void;
-  currentStoreId?: string;
-  setCurrentStoreId?: (storeId: string) => void;
+  currentStore?: Store;
+  setCurrentStore?: (store: Store) => void;
 };
 
 const StoreField = ({
   isHovered,
   isSelected,
   unselect,
-  currentStoreId,
-  setCurrentStoreId,
+  currentStore,
+  setCurrentStore,
 }: StoreFieldProps) => {
   const [chunkedStores, setChunkedStores] = useState<Store[][]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [hoveredStoreId, setHoveredStoreId] = useState<string | null>(null);
-  const [selectedStoreId, setSelectedStoreId] = useState<string | null>(null);
 
   const handleFetchStores = async () => {
     const res = await fetchStores();
@@ -60,8 +59,9 @@ const StoreField = ({
 
     if (input === ' ') {
       if (!hoveredStoreId) return;
-      setSelectedStoreId(hoveredStoreId);
-      // if (setCurrentStoreId) setCurrentStoreId(hoveredStoreId);
+      const store = stores.find((store) => store.id === hoveredStoreId);
+      if (!store) return;
+      if (setCurrentStore) setCurrentStore(store);
     }
 
     if (key.return) {
@@ -90,8 +90,8 @@ const StoreField = ({
               const color = hoveredStoreId === store.id ? 'cyan' : 'white';
               return (
                 <Box key={store.id}>
-                  {store.id === currentStoreId ? (
-                    <Text color={color}> (X)</Text>
+                  {store.id === currentStore?.id ? (
+                    <Text color={color}>(X)</Text>
                   ) : (
                     <Text color={color}>( )</Text>
                   )}

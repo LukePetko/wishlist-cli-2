@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import useItem from '../state';
 import { Box, Text, useInput } from 'ink';
+import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import useItem from '../state';
+import type { WishlistLink } from '../types';
 import codeToSymbol from '../utils/codeToSymbol';
 import LinkModal from './LinkModal';
 
 const Links = () => {
-  const { activeItem, modal, setModal } = useItem();
+  const { setActiveItem, activeItem, modal, setModal } = useItem();
 
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
@@ -13,6 +15,22 @@ const Links = () => {
     if (modal) return;
 
     if (key.return) {
+      const newLinkId = uuidv4();
+      if (hoveredField === 'create-link') {
+        setLink({
+          id: newLinkId,
+          storeId: null,
+          itemId: null,
+          store: {
+            name: '',
+            icon: null,
+          },
+          url: null,
+          price: null,
+          currency: 'EUR',
+        });
+      }
+      setHoveredField(newLinkId);
       setModal('create-link');
     }
 
@@ -42,21 +60,48 @@ const Links = () => {
     }
   });
 
+  const setLink = (newLink: WishlistLink) => {
+    const currentLink = activeItem?.wishlistLinks?.find(
+      (link) => link.id === newLink.id,
+    );
+
+    if (currentLink) {
+      setActiveItem({
+        ...activeItem,
+        wishlistLinks: activeItem.wishlistLinks.map((link) => {
+          if (link.id === currentLink.id) {
+            return newLink;
+          }
+          return link;
+        }),
+      });
+      return;
+    }
+
+    setActiveItem({
+      ...activeItem,
+      wishlistLinks: [...activeItem.wishlistLinks, newLink],
+    });
+  };
+
   return (
     <Box flexDirection="column">
-      {activeItem?.wishlistLinks?.map((link) => (
-        <Box key={link.id}>
-          {hoveredField === link.id ? (
-            <Text color="cyan"> ❯ </Text>
-          ) : (
-            <Text color="cyan">{'   '}</Text>
-          )}
-          <Text color={hoveredField === link.id ? 'cyan' : 'white'}>
-            {link.store.name} - {link.price}
-            {codeToSymbol(link.currency)}
-          </Text>
-        </Box>
-      ))}
+      {activeItem?.wishlistLinks?.map((link) => {
+        if (!link.storeId || !link.price || !link.currency) return;
+        return (
+          <Box key={link.id}>
+            {hoveredField === link.id ? (
+              <Text color="cyan"> ❯ </Text>
+            ) : (
+              <Text color="cyan">{'   '}</Text>
+            )}
+            <Text color={hoveredField === link.id ? 'cyan' : 'white'}>
+              {link.store?.name} - {link.price}
+              {codeToSymbol(link.currency)}
+            </Text>
+          </Box>
+        );
+      })}
       <Box>
         {hoveredField === 'create-link' ? (
           <Text color="cyan"> ❯ </Text>
@@ -70,10 +115,7 @@ const Links = () => {
       <LinkModal
         isOpen={modal === 'create-link'}
         onClose={() => setModal(null)}
-        link={
-          activeItem?.wishlistLinks?.find((link) => link.id === hoveredField) ??
-          null
-        }
+        linkId={hoveredField}
       />
     </Box>
   );

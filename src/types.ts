@@ -7,6 +7,7 @@ import type {
 } from './db/schema';
 
 export type WishlistLink = {
+  id?: string;
   storeId: string | null;
   itemId: string | null;
   url: string | null;

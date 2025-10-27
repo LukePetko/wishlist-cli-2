@@ -1,33 +1,61 @@
 import { Box, Text, useInput } from 'ink';
-import type { WishlistLink } from '../types';
+import { useEffect, useState } from 'react';
+import useItem from '../state';
+import type { Store, WishlistLink } from '../types';
 import Modal from './Modal';
-import { useState } from 'react';
-import TextInput from './TextInput';
 import StoreField from './StoreField';
+import TextInput from './TextInput';
 
 type LinkModalProps = {
-  link: WishlistLink | null;
-  setLink: (link: WishlistLink) => void;
+  linkId: string | null;
   isOpen: boolean;
   onClose: () => void;
 };
 
 type HoveredField = 'url' | 'store' | 'price' | 'currency';
 
-const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
+const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   const [selectedField, setSelectedField] = useState<HoveredField | null>(null);
   const [hoveredField, setHoveredField] = useState<HoveredField>('url');
+
+  const [link, setLink] = useState<WishlistLink | undefined>();
+
+  const { setActiveItem, activeItem } = useItem();
+
+  useEffect(() => {
+    if (linkId) {
+      setLink(activeItem?.wishlistLinks?.find((link) => link.id === linkId));
+    }
+  }, [linkId]);
+
+  useEffect(() => {
+    if (link) {
+      setActiveItem({
+        ...activeItem,
+        wishlistLinks: activeItem.wishlistLinks.map((currentLink) => {
+          if (currentLink.id !== linkId) {
+            return currentLink;
+          }
+          return link;
+        }),
+      });
+    }
+  }, [link]);
 
   const handleModalClose = async (name?: string) => {
     onClose();
   };
 
-  useInput((input, key) => {
-    if (!isOpen || selectedField === 'store') return;
+  const handleStoreChange = (store: Store) => {
+    setLink({ ...link, storeId: store.id, store });
+  };
 
+  useInput((input, key) => {
     if (key.return) {
       setSelectedField(selectedField ? null : hoveredField);
     }
+
+    if (!isOpen || selectedField) return;
 
     if (input === 'j') {
       switch (hoveredField) {
@@ -79,7 +107,7 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
   return (
     <Modal
       isOpen={isOpen}
-      title={link?.store.name ? link.store.name : 'Add New Link'}
+      title={link?.store?.name ? link.store.name : 'Add New Link'}
     >
       <Box flexDirection="column">
         <Box flexDirection="column" marginBottom={1}>
@@ -114,8 +142,8 @@ const LinkModal = ({ link, isOpen, onClose, setLink }: LinkModalProps) => {
             isHovered={hoveredField === 'store'}
             isSelected={selectedField === 'store'}
             unselect={() => setSelectedField(null)}
-            currentStoreId={link?.store.id}
-            setCurrentStoreId={(storeId) => setLink({ ...link, storeId })}
+            currentStore={link?.store}
+            setCurrentStore={handleStoreChange}
           />
         </Box>
         <Text color="cyan">Press [y] to confirm</Text>
