@@ -10,6 +10,7 @@ import Difficulty from './Difficulty';
 import Info from './Info';
 import NavBar from './NavBar';
 import Links from './Links';
+import useSave from '../lib/useSave';
 
 const Item = () => {
   const {
@@ -22,6 +23,8 @@ const Item = () => {
     backHome,
     modal,
   } = useItem();
+
+  const { handleSave } = useSave();
 
   const getWishlistItem = async () => {
     if (!item) return;
@@ -116,6 +119,10 @@ const Item = () => {
 
     if (input === 'b') {
       backHome();
+    }
+
+    if (input === 's') {
+      handleSave();
     }
   });
   return (
