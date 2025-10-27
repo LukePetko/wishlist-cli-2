@@ -1,14 +1,14 @@
-import useItem from '../state';
 import { db } from '../db';
 import {
   wishlistItems,
   wishlistItemsCategories,
   wishlistLinks,
 } from '../db/schema';
+import useItem from '../state';
 import insertIntoStorage from './insertIntoStorage';
 
 const useSave = () => {
-  const { activeItem } = useItem();
+  const { activeItem, backHome } = useItem();
 
   const handleSave = async () => {
     if (!activeItem) return;
@@ -18,6 +18,7 @@ const useSave = () => {
 
       if (activeItem.image) {
         image = await insertIntoStorage('items', activeItem.image);
+        if (!image) return;
       }
 
       const [wishlistItem] = await tx
@@ -54,6 +55,7 @@ const useSave = () => {
         );
       }
 
+      backHome();
       return wishlistItem;
     });
   };
