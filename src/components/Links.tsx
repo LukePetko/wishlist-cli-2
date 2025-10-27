@@ -29,8 +29,8 @@ const Links = () => {
           price: null,
           currency: 'EUR',
         });
+        setHoveredField(newLinkId);
       }
-      setHoveredField(newLinkId);
       setModal('create-link');
     }
 

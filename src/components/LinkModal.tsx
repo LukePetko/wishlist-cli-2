@@ -43,7 +43,18 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   }, [link]);
 
   const handleModalClose = async (name?: string) => {
+    setHoveredField('url');
     onClose();
+  };
+
+  const handleDeleteLink = async () => {
+    setActiveItem({
+      ...activeItem,
+      wishlistLinks: activeItem.wishlistLinks.filter(
+        (link) => link.id !== linkId,
+      ),
+    });
+    handleModalClose();
   };
 
   const handleStoreChange = (store: Store) => {
@@ -95,12 +106,12 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
       }
     }
 
-    if (input === 'y') {
+    if (input === 'c') {
       handleModalClose();
     }
 
-    if (input === 'n') {
-      handleModalClose();
+    if (input === 'd') {
+      handleDeleteLink();
     }
   });
 
@@ -146,8 +157,8 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
             setCurrentStore={handleStoreChange}
           />
         </Box>
-        <Text color="cyan">Press [y] to confirm</Text>
-        <Text color="cyan">Press [n] to cancel</Text>
+        <Text color="cyan">Press [c] to confirm</Text>
+        <Text color="cyan">Press [d] to delete</Text>
       </Box>
     </Modal>
   );
