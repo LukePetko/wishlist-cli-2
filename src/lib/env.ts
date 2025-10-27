@@ -7,6 +7,7 @@ export const envSchema = z.object({
   S3_ACCESS_KEY: z.string(),
   S3_SECRET_KEY: z.string(),
   S3_USE_SSL: z.coerce.boolean().default(false),
+  S3_BUCKET_NAME: z.string(),
 });
 
 export type Env = z.infer<typeof envSchema>;

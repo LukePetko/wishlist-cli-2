@@ -5,6 +5,7 @@ import {
   wishlistItemsCategories,
   wishlistLinks,
 } from '../db/schema';
+import insertIntoStorage from './insertIntoStorage';
 
 const useSave = () => {
   const { activeItem } = useItem();
@@ -13,11 +14,17 @@ const useSave = () => {
     if (!activeItem) return;
 
     return await db.transaction(async (tx) => {
+      let image = null;
+
+      if (activeItem.image) {
+        image = await insertIntoStorage('items', activeItem.image);
+      }
+
       const [wishlistItem] = await tx
         .insert(wishlistItems)
         .values({
           name: activeItem.name,
-          image: activeItem.image,
+          image,
           description: activeItem.description,
           difficultyLevel: activeItem.difficultyLevel?.id,
         })
