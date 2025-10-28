@@ -62,11 +62,13 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   };
 
   useInput((input, key) => {
+    if (!isOpen) return;
+
     if (key.return) {
       setSelectedField(selectedField ? null : hoveredField);
     }
 
-    if (!isOpen || selectedField) return;
+    if (selectedField) return;
 
     if (input === 'j') {
       switch (hoveredField) {

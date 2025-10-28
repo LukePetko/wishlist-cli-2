@@ -4,9 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun run src/index.tsx",
-    "build": "bun build src/index.tsx --target bun --outfile ./dist/wishlist --compile",
     "move": "mv ./dist/wishlist ~/.local/bin/wishlist",
-    "bm": "bun run build && bun run move",
+    "bm": "./build.sh && bun run move",
     "cleanup": "rm -rf ./dist && rm ~/.local/bin/wishlist"
   },
   "devDependencies": {
