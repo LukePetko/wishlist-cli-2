@@ -13,7 +13,7 @@ export type WishlistLink = {
   url?: string | null;
   price?: string | null;
   currency?: string | null;
-  store: Store;
+  store?: Store;
 };
 
 export type WishlistItem = Omit<

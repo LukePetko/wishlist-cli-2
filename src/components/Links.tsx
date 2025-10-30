@@ -46,7 +46,7 @@ const Links = () => {
           setHoveredField('create-link');
           return;
         }
-        setHoveredField(activeItem?.wishlistLinks[currentLink + 1].id);
+        setHoveredField(activeItem?.wishlistLinks[currentLink + 1].id ?? null);
       }
 
       if (input === 'k') {
