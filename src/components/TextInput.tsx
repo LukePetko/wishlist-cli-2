@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/useExhaustiveDependencies: intentional */
 import { Box, Text } from 'ink';
 import InkTextInput from 'ink-text-input';
 import { useEffect } from 'react';
