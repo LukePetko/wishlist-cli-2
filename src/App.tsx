@@ -8,7 +8,7 @@ export default function App() {
   const { exit } = useApp();
   const { item, modal } = useItem();
 
-  useInput((input, key) => {
+  useInput((input) => {
     if (modal) return;
     if (input === 'q') exit();
   });

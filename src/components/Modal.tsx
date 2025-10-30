@@ -1,4 +1,4 @@
-import { Box, Text, useInput } from 'ink';
+import { Box, Text } from 'ink';
 
 type Corner =
   | 'center'

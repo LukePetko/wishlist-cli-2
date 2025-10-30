@@ -1,11 +1,11 @@
-import { Text, useStdout } from 'ink';
-import Gradient from 'ink-gradient';
 import figlet from 'figlet';
-
-import Big from 'figlet/importable-fonts/Big.js';
 import AnsiShadow from 'figlet/importable-fonts/ANSI Shadow.js';
 import Banner3D from 'figlet/importable-fonts/Banner3-D.js';
+
+import Big from 'figlet/importable-fonts/Big.js';
 import Cyberlarge from 'figlet/importable-fonts/Cyberlarge.js';
+import { Text, useStdout } from 'ink';
+import Gradient from 'ink-gradient';
 
 // register a few “filled” fonts
 figlet.parseFont('Big', Big);

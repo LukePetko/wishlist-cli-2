@@ -16,6 +16,8 @@ const useSave = () => {
     return await db.transaction(async (tx) => {
       let image = null;
 
+      if (!activeItem.name) return;
+
       if (activeItem.image) {
         image = await insertIntoStorage('items', activeItem.image);
         if (!image) return;

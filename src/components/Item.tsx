@@ -3,14 +3,14 @@ import { Box, useInput } from 'ink';
 import { useEffect } from 'react';
 import { db } from '../db';
 import { wishlistItems } from '../db/schema';
+import useSave from '../lib/useSave';
 import useItem from '../state';
 import type { WishlistItem } from '../types';
 import Category from './Category';
 import Difficulty from './Difficulty';
 import Info from './Info';
-import NavBar from './NavBar';
 import Links from './Links';
-import useSave from '../lib/useSave';
+import NavBar from './NavBar';
 
 const Item = () => {
   const {
@@ -76,7 +76,7 @@ const Item = () => {
     getWishlistItem();
   }, [item]);
 
-  useInput((input, key) => {
+  useInput((input) => {
     if (modal || blockInput) return;
     if (input === 'p') setItem(null);
 

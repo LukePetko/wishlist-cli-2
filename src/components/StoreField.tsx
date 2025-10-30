@@ -44,7 +44,7 @@ const StoreField = ({
         return;
       }
       setHoveredStoreId(
-        stores[currentHoveredStoreIndex + 1]?.id ?? stores[0]?.id,
+        stores[currentHoveredStoreIndex + 1]?.id ?? stores[0]?.id ?? null,
       );
     }
 
@@ -53,7 +53,7 @@ const StoreField = ({
         return;
       }
       setHoveredStoreId(
-        stores[currentHoveredStoreIndex - 1]?.id ?? stores[0]?.id,
+        stores[currentHoveredStoreIndex - 1]?.id ?? stores[0]?.id ?? null,
       );
     }
 

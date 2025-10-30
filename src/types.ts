@@ -8,29 +8,30 @@ import type {
 
 export type WishlistLink = {
   id?: string;
-  storeId: string | null;
-  itemId: string | null;
-  url: string | null;
-  price: number | null;
-  currency: string | null;
+  storeId?: string | null;
+  itemId?: string | null;
+  url?: string | null;
+  price?: string | null;
+  currency?: string | null;
   store: Store;
 };
 
 export type WishlistItem = Omit<
   typeof wishlistItems.$inferInsert,
-  'difficultyLevel' | 'id'
+  'difficultyLevel' | 'id' | 'name'
 > & {
-  id: string | null;
-  wishlistLinks: WishlistLink[] | undefined;
+  id?: string | null;
+  name?: string | null;
+  wishlistLinks?: WishlistLink[] | undefined;
 
-  wishlistItemsCategories: (typeof categories.$inferSelect)[];
-  difficultyLevel: typeof difficultyLevels.$inferSelect | null;
+  wishlistItemsCategories?: (typeof categories.$inferInsert)[];
+  difficultyLevel?: typeof difficultyLevels.$inferInsert | null;
 };
 
 export type Page = (typeof pages)[number];
 
-export type DifficultyLevel = typeof difficultyLevels.$inferSelect;
+export type DifficultyLevel = typeof difficultyLevels.$inferInsert;
 
-export type Category = typeof categories.$inferSelect;
+export type Category = typeof categories.$inferInsert;
 
 export type Store = typeof stores.$inferInsert;

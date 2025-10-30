@@ -1,4 +1,4 @@
-function chunk(array: any[], size: number) {
+function chunk<T>(array: T[], size: number) {
   if (size <= 0) throw new Error('Size must be greater than 0');
   const result = [];
   for (let i = 0; i < array.length; i += size) {

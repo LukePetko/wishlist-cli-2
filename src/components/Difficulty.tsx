@@ -14,7 +14,7 @@ const Difficulty = () => {
     },
   ]);
   const [hoveredField, setHoveredField] = useState<string | null>(
-    difficulties[0].id,
+    difficulties[0].id ?? null,
   );
 
   const handleDifficultyFetch = async () => {
@@ -26,18 +26,18 @@ const Difficulty = () => {
     handleDifficultyFetch();
   }, []);
 
-  useInput((input, key) => {
+  useInput((input) => {
     const currentDifficulty = difficulties.findIndex(
       (difficulty) => difficulty.id === hoveredField,
     );
     if (input === 'j') {
       if (currentDifficulty === difficulties.length - 1) return;
-      setHoveredField(difficulties[currentDifficulty + 1].id);
+      setHoveredField(difficulties[currentDifficulty + 1].id ?? null);
     }
 
     if (input === 'k') {
       if (currentDifficulty === 0) return;
-      setHoveredField(difficulties[currentDifficulty - 1].id);
+      setHoveredField(difficulties[currentDifficulty - 1].id ?? null);
     }
 
     if (input === ' ') {

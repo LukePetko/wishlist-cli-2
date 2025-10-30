@@ -1,11 +1,13 @@
+import { count, eq } from 'drizzle-orm';
 import { Box, Text, useInput } from 'ink';
 import SelectInput from 'ink-select-input';
 import { useEffect, useState } from 'react';
 import { db } from '../db';
 import { wishlistItems as wishlistItemsSchema } from '../db/schema';
-import { count, eq } from 'drizzle-orm';
 import useItem from '../state';
 import Legend from './Legend';
+
+const PAGE_SIZE = 10;
 
 const List = () => {
   const [wishlistItems, setWishlistItems] = useState<
@@ -14,7 +16,6 @@ const List = () => {
   const { setItem, setPage: setItemPage } = useItem();
 
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
   const [showIsBought, setShowIsBought] = useState<
     'unbought' | 'bought' | 'all'
   >('unbought');
@@ -34,8 +35,8 @@ const List = () => {
             ? undefined
             : eq(wishlistItemsSchema.isBought, showIsBought === 'bought'),
         )
-        .limit(pageSize)
-        .offset((page - 1) * pageSize)
+        .limit(PAGE_SIZE)
+        .offset((page - 1) * PAGE_SIZE)
         .execute()
     ).map((item) => ({
       ...item,
@@ -64,7 +65,7 @@ const List = () => {
       return;
     }
 
-    setNumberOfPages(Math.ceil(result[0].count / pageSize));
+    setNumberOfPages(Math.ceil(result[0].count / PAGE_SIZE));
   };
 
   useEffect(() => {
@@ -75,7 +76,7 @@ const List = () => {
     fetchWishlistItems();
   }, [page, showIsBought]);
 
-  useInput((input, key) => {
+  useInput((input) => {
     if (input === 'l')
       setPage((page) => (page < numberOfPages ? page + 1 : page));
     if (input === 'h') setPage((page) => (page > 1 ? page - 1 : page));
@@ -115,7 +116,7 @@ const List = () => {
         flexDirection="column"
         padding={1}
         paddingTop={
-          pageSize - wishlistItems.length + (wishlistItems.length && 1)
+          PAGE_SIZE - wishlistItems.length + (wishlistItems.length && 1)
         }
       >
         <Text>

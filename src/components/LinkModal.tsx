@@ -32,7 +32,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
     if (link) {
       setActiveItem({
         ...activeItem,
-        wishlistLinks: activeItem.wishlistLinks.map((currentLink) => {
+        wishlistLinks: activeItem?.wishlistLinks?.map((currentLink) => {
           if (currentLink.id !== linkId) {
             return currentLink;
           }
@@ -42,7 +42,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
     }
   }, [link]);
 
-  const handleModalClose = async (name?: string) => {
+  const handleModalClose = async () => {
     setHoveredField('url');
     onClose();
   };
@@ -50,7 +50,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   const handleDeleteLink = async () => {
     setActiveItem({
       ...activeItem,
-      wishlistLinks: activeItem.wishlistLinks.filter(
+      wishlistLinks: activeItem?.wishlistLinks?.filter(
         (link) => link.id !== linkId,
       ),
     });
@@ -58,7 +58,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   };
 
   const handleStoreChange = (store: Store) => {
-    setLink({ ...link, storeId: store.id, store });
+    setLink({ ...link, storeId: store.id ?? null, store });
   };
 
   useInput((input, key) => {

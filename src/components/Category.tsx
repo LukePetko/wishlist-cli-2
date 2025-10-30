@@ -50,12 +50,12 @@ const Category = () => {
     );
     if (input === 'j') {
       if (currentCategory === categories.length - 1) return;
-      setHoveredField(categories[currentCategory + 1].id);
+      setHoveredField(categories[currentCategory + 1].id ?? null);
     }
 
     if (input === 'k') {
       if (currentCategory === 0) return;
-      setHoveredField(categories[currentCategory - 1].id);
+      setHoveredField(categories[currentCategory - 1].id ?? null);
     }
 
     if (input === ' ') {
@@ -73,7 +73,7 @@ const Category = () => {
         setActiveItem({
           ...activeItem,
           wishlistItemsCategories: [
-            ...activeItem.wishlistItemsCategories,
+            ...(activeItem?.wishlistItemsCategories ?? []),
             {
               id: hoveredField,
               name: categories.find((c) => c.id === hoveredField)?.name ?? '',
