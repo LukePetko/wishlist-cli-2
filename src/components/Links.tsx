@@ -7,12 +7,12 @@ import codeToSymbol from '../utils/codeToSymbol';
 import LinkModal from './LinkModal';
 
 const Links = () => {
-  const { setActiveItem, activeItem, modal, setModal } = useItem();
+  const { setActiveItem, activeItem, modal, setModal, blockInput } = useItem();
 
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
   useInput((input, key) => {
-    if (modal) return;
+    if (blockInput) return;
 
     if (key.return) {
       const newLinkId = uuidv4();

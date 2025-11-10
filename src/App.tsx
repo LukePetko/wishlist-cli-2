@@ -6,10 +6,10 @@ import useItem from './state';
 
 export default function App() {
   const { exit } = useApp();
-  const { item, modal } = useItem();
+  const { item, blockInput } = useItem();
 
   useInput((input) => {
-    if (modal) return;
+    if (blockInput) return;
     if (input === 'q') exit();
   });
 
