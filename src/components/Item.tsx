@@ -11,6 +11,7 @@ import Difficulty from './Difficulty';
 import Info from './Info';
 import Links from './Links';
 import NavBar from './NavBar';
+import ItemLegend from './ItemLegend';
 
 const Item = () => {
   const {
@@ -128,6 +129,7 @@ const Item = () => {
   });
   return (
     <Box flexDirection="column" marginTop={1}>
+      <ItemLegend />
       <NavBar />
       {page === 'info' && <Info />}
       {page === 'difficulty' && <Difficulty />}
