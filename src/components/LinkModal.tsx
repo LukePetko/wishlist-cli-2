@@ -20,7 +20,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
 
   const [link, setLink] = useState<WishlistLink | undefined>();
 
-  const { setActiveItem, activeItem } = useItem();
+  const { setActiveItem, activeItem, setBlockInput } = useItem();
 
   useEffect(() => {
     if (linkId) {
@@ -43,6 +43,7 @@ const LinkModal = ({ linkId, isOpen, onClose }: LinkModalProps) => {
   }, [link]);
 
   const handleModalClose = async () => {
+    setBlockInput(false);
     setHoveredField('url');
     onClose();
   };

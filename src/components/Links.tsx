@@ -7,12 +7,13 @@ import codeToSymbol from '../utils/codeToSymbol';
 import LinkModal from './LinkModal';
 
 const Links = () => {
-  const { setActiveItem, activeItem, modal, setModal, blockInput } = useItem();
+  const { setActiveItem, activeItem, modal, setModal, setBlockInput } =
+    useItem();
 
   const [hoveredField, setHoveredField] = useState<string | null>(null);
 
   useInput((input, key) => {
-    if (blockInput) return;
+    if (modal) return;
 
     if (key.return) {
       const newLinkId = uuidv4();
@@ -32,6 +33,7 @@ const Links = () => {
         setHoveredField(newLinkId);
       }
       setModal('create-link');
+      setBlockInput(true);
     }
 
     if (activeItem?.wishlistLinks) {
